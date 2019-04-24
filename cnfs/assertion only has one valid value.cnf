@@ -1,0 +1,27 @@
+c assertion only has one valid value
+c
+c   | Concern           | Route       | Assertion                       |
+c   | Disaster Recovery | No Risk     | No impact on customer           |
+c   |                   | Some Risk   | Potential impact is limited     |
+c   |                   | Crisis Risk | Potential impact is significant |
+c
+c  1. (A + B + C)
+c
+c  No impact on customer ⊕ Potential impact is limited ⊕ Potential impact is significant = 1
+c
+c  1. 1 = A ⊕ B ⊕ C & ~(A & B & C)
+c  2. 1 = (~A + ~B) & (~A + ~C) & (A + B + C) & (~B + ~C)
+c
+c  No impact on customer = Potential impact is limited
+c
+c  1. A = B
+c  2. 1 = (A & B) + (~A & ~B)
+c  3. 1 = (~A + B) & (A + ^B)
+c
+p cnf 3 6
+1 2 3 0
+-1 -2 0
+-1 -3 0
+-2 -3 0
+-1 2 0
+1 -2 0

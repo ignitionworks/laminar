@@ -1,0 +1,68 @@
+c subset of concerns are ambiguously inferred remaining assertions
+c
+c     | Concern           | Route       | Assertion                       |
+c     | Disaster Recovery | No Risk     | No impact on customer           |
+c     |                   | Some Risk   | Potential impact is limited     |
+c     |                   | Crisis Risk | Potential impact is significant |
+c
+c     x1 = No impact on customer
+c     x2 = Potential impact is limited
+c     x3 = Potential impact is significant
+c
+c     Policy
+c
+c     1. (x1 + x2 + x3)
+c
+c  No impact on customer ⊕ Potential impact is limited ⊕ Potential impact is significant = 1
+c
+c     Connector
+c
+c     2. 1 = x1 ⊕ x2 ⊕ x3 & ~(x1 & x2 & x3)
+c     3. 1 = (~x1 + ~x2) & (~x1 + ~x3) & (x1 + x2 + x3) & (~x2 + ~x3)
+c
+c  Copy changes = ¬No copy changes
+c
+c     x4 = Copy changes
+c     x5 = No copy changes
+c
+c     Connector
+c
+c     4. 1 = x4 ⊕ x5
+c     5. 1 = (~x4 + ~x5) & (x4 + x5)
+c
+c  Database migration = ¬No database migration
+c
+c     x6 = Database migration
+c     x7 = No database migration
+c
+c     Connector
+c
+c     6. 1 = x6 ⊕ x7
+c     7. 1 = (~x6 + ~x7) & (x6 + x7)
+c
+c  Copy Changes -> Potential impact is limited + Potential impact is significant
+c
+c     Connector
+c
+c     8. 1 = x4 -> (x2 + x3)
+c     9. 1 = ~x4 + x2 + x3
+c
+c  Database Migration -> Potential impact is significant
+c
+c     Connector
+c
+c    10. 1 = x6 -> x3
+c    11. 1 = ~x6 + x3
+c
+c
+p cnf 3 6
+-1 -2 0
+-1 -3 0
+1 2 3 0
+-2 -3 0
+-4 -5 0
+4 5 0
+-6 -7 0
+6 7 0
+-4 2 3 0
+-6 3 0
